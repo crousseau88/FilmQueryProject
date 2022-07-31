@@ -2,7 +2,6 @@ package com.skilldistillery.filmquery.entities;
 
 import java.util.List;
 import java.util.Objects;
-
 public class Film {
 	private int id;
 	private String title;
@@ -17,6 +16,8 @@ public class Film {
 	private String rating;
 	private String specialFeatures;
 	private List<Actor> actors;
+	
+	Actor actor = new Actor();
 	
 	public Film() {}
 	
@@ -123,17 +124,19 @@ public class Film {
 		return " Film id= " + id + "\n title= " + title + "\n description= " + description + "\n releaseYear= " + releaseYear
 				+ "\n languageID= " + languageID + "\n Language: " + languageType + "\n rentalDuration= " + rentalDuration + "\n Rental Rate= " + rentalRate
 				+ "\n length= " + length + "\n replacementCost= " + replacementCost + "\n rating= " + rating
-				+ "\n specialFeatures= " + specialFeatures + "\n actors= " + actors + "\n films= " + ".";
+				+ "\n specialFeatures= " + specialFeatures + "\n cast= " + actors + "\n films= " + ".";
 	}
 	public String films() {
-		return "Film ID: " + id + "\n Title: " + title + "\n Description: " + description + "\n Language: " + languageType + "\n Release Year: " + releaseYear 
+		return "Film ID: " + id + "\n Title: " + title + "\n Cast: " + actors + "\n Description: " + description + "\n Language: " + languageType + "\n Release Year: " + releaseYear 
 				+ "\n Rating: " + rating;
 	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(actors, description, id, languageID, languageType, length, rating, releaseYear, rentalDuration,
-				rentalRate, replacementCost, specialFeatures, title);
+		return Objects.hash(actor, actors, description, id, languageID, languageType, length, rating, releaseYear,
+				rentalDuration, rentalRate, replacementCost, specialFeatures, title);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -146,14 +149,16 @@ public class Film {
 			return false;
 		}
 		Film other = (Film) obj;
-		return Objects.equals(actors, other.actors) && Objects.equals(description, other.description)
-				&& id == other.id && languageID == other.languageID&& languageType == other.languageType
-				&& length == other.length && Objects.equals(rating, other.rating) && releaseYear == other.releaseYear
+		return Objects.equals(actor, other.actor) && Objects.equals(actors, other.actors)
+				&& Objects.equals(description, other.description) && id == other.id && languageID == other.languageID
+				&& Objects.equals(languageType, other.languageType) && length == other.length
+				&& Objects.equals(rating, other.rating) && releaseYear == other.releaseYear
 				&& rentalDuration == other.rentalDuration
 				&& Double.doubleToLongBits(rentalRate) == Double.doubleToLongBits(other.rentalRate)
 				&& Double.doubleToLongBits(replacementCost) == Double.doubleToLongBits(other.replacementCost)
 				&& Objects.equals(specialFeatures, other.specialFeatures) && Objects.equals(title, other.title);
 	}
+	
 	
 
 	

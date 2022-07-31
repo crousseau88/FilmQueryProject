@@ -78,23 +78,23 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
 		List<Actor> actorByFilmId = new ArrayList<>();
-		Actor actorID = null;
+		Actor actorID;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT * " + " FROM film JOIN film_actor ON film.id = film_actor.film_id WHERE actor_id = ?";
-
+			String sql = "SELECT a.id, a.first_name, a.last_name, film.id" + " FROM film_actor f"
+                    + " JOIN actor a ON f.actor_id = a.id" + " JOIN film ON f.film_id = film.id" + " WHERE film.id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
-			System.out.println(stmt);
+			
 
 			ResultSet rs = stmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				actorID = new Actor();
 				actorID.setId(rs.getInt("id"));
 				actorID.setFirstName(rs.getString("first_name"));
 				actorID.setLastName(rs.getString("last_name"));
-
+				actorByFilmId.add(actorID);
 			}
 			rs.close();
 			stmt.close();
@@ -103,7 +103,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return (List<Actor>) actorID;
+		return actorByFilmId;
 	}
 
 		public List<Film> findFilmByKeyWord(String keyword) {
@@ -132,6 +132,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 					film.setLanguageID(rs.getInt("language_id"));
 					film.setLanguageType(rs.getString("l.name"));
 					film.setRating(rs.getString("rating"));
+					film.setActors(findActorsByFilmId(rs.getInt("id")));
 					films.add(film);
 					
 					

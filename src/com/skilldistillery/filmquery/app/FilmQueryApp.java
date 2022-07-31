@@ -3,10 +3,10 @@ package com.skilldistillery.filmquery.app;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
 import com.skilldistillery.filmquery.entities.Film;
-
 public class FilmQueryApp {
 
 	DatabaseAccessor db = new DatabaseAccessorObject();
@@ -53,9 +53,10 @@ public class FilmQueryApp {
 					int id = input.nextInt();
 					Film film = db.findFilmById(id);
 					
+					
 					if(film != null) {
 						System.out.println("Film ID: " + film.getId());
-						System.out.println("Actors: " + film.getActors());
+						System.out.println("Actors: " + db.findActorsByFilmId(id));
 						System.out.println("Title: " + film.getTitle());
 						System.out.println("Description: " + film.getDescription());
 						System.out.println("Language: " + film.getLanguageType());
@@ -69,9 +70,11 @@ public class FilmQueryApp {
 					}
 					break;
 				case 2:
+					
 					System.out.println("Please enter a search keyword. ");
 					String keyword = input.next();
 					List<Film> film3 =  db.findFilmByKeyWord(keyword);
+					
 					for (Film film2 : film3) {
 						System.out.println(film2.films());
 					}
