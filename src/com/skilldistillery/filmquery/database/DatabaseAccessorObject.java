@@ -21,23 +21,24 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Film film = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT * FROM film WHERE id = ?";
+			String sql = "SELECT film.*, language.name FROM film JOIN language ON film.language_id = language.id WHERE film.id = ?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 
-			ResultSet filmResult = stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery();
 
-			if (filmResult.next()) {
+			if (rs.next()) {
 				film = new Film();
-				film.setId(filmResult.getInt("id"));
-				film.setTitle(filmResult.getString("title"));
-				film.setDescription(filmResult.getString("description"));
-				film.setReleaseYear(filmResult.getInt("release_year"));
-				film.setLanguageID(filmResult.getInt("language_id"));
-				film.setRating(filmResult.getString("rating"));
+				film.setId(rs.getInt("id"));
+				film.setTitle(rs.getString("title"));
+				film.setDescription(rs.getString("description"));
+				film.setReleaseYear(rs.getInt("release_year"));
+				film.setLanguageID(rs.getInt("language_id"));
+				film.setLanguageType(rs.getString("language.name"));
+				film.setRating(rs.getString("rating"));
 			}
-			filmResult.close();
+			rs.close();
 			stmt.close();
 			conn.close();
 			return film;
@@ -57,15 +58,15 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, actorId);
 
-			ResultSet actorResult = stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery();
 
-			if (actorResult.next()) {
+			if (rs.next()) {
 				actor = new Actor();
-				actor.setId(actorResult.getInt("id"));
-				actor.setFirstName(actorResult.getString("first_name"));
-				actor.setLastName(actorResult.getString("last_name"));
+				actor.setId(rs.getInt("id"));
+				actor.setFirstName(rs.getString("first_name"));
+				actor.setLastName(rs.getString("last_name"));
 			}
-			actorResult.close();
+			rs.close();
 			stmt.close();
 			conn.close();
 		} catch (SQLException e) {
@@ -105,7 +106,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return (List<Actor>) actorID;
 	}
 
-	
 		public List<Film> findFilmByKeyWord(String keyword) {
 			Film film = null ;
 			List<Film> films = new ArrayList<>();
@@ -113,28 +113,32 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				Connection conn = DriverManager.getConnection(URL, user, pass);
 				
 						
-				String sql = "SELECT * FROM film WHERE title LIKE ? OR description LIKE ?";
+				String sql = "SELECT * FROM film f JOIN film_category fc ON f.id = fc.film_id JOIN category c ON fc.category_id = c.id JOIN language l ON f.language_id = l.id WHERE title LIKE ? OR description LIKE ?";
 
 				PreparedStatement stmt = conn.prepareStatement(sql);
-				stmt.setString(1, "%" + keyword + "%");
-				stmt.setString(2, "%" + keyword + "%");
-				ResultSet keywordResult = stmt.executeQuery();
+				keyword = "%" + keyword + "%";
+				stmt.setString(1, keyword);
+				stmt.setString(2, keyword);
 
-				while (keywordResult.next()) {
+				
+				ResultSet rs = stmt.executeQuery();
+
+				while (rs.next()) {
 					film = new Film();
-					film.setId(keywordResult.getInt("id"));
-					film.setTitle(keywordResult.getString("title"));
-					film.setDescription(keywordResult.getString("description"));
-					film.setReleaseYear(keywordResult.getInt("release_year"));
-					film.setLanguageID(keywordResult.getInt("language_id"));
-					film.setRating(keywordResult.getString("rating"));
+					film.setId(rs.getInt("id"));
+					film.setTitle(rs.getString("title"));
+					film.setDescription(rs.getString("description"));
+					film.setReleaseYear(rs.getInt("release_year"));
+					film.setLanguageID(rs.getInt("language_id"));
+					film.setLanguageType(rs.getString("l.name"));
+					film.setRating(rs.getString("rating"));
 					films.add(film);
 					
 					
 			
 
 				}
-				keywordResult.close();
+				rs.close();
 				stmt.close();
 				conn.close();
 			} catch (SQLException e) {

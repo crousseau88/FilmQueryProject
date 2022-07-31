@@ -9,6 +9,7 @@ public class Film {
 	private String description;
 	private int releaseYear;
 	private int languageID;
+	private String languageType;
 	private int rentalDuration;
 	private double rentalRate;
 	private int length;
@@ -48,6 +49,13 @@ public class Film {
 	}
 	public void setLanguageID(int languageID) {
 		this.languageID = languageID;
+	}
+	public String getLanguageType() {
+		return languageType;
+	}
+
+	public void setLanguageType(String languageType) {
+		this.languageType = languageType;
 	}
 	public int getRentalDuration() {
 		return rentalDuration;
@@ -94,13 +102,14 @@ public class Film {
 	
 	public Film(int id, String title, String description, int releaseYear, int languageID, int rentalDuration,
 			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
-			List<Actor> actors) {
+			List<Actor> actors, String languageType) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.releaseYear = releaseYear;
 		this.languageID = languageID;
+		this.languageType = languageType;
 		this.rentalDuration = rentalDuration;
 		this.rentalRate = rentalRate;
 		this.length = length;
@@ -112,17 +121,17 @@ public class Film {
 	@Override
 	public String toString() {
 		return " Film id= " + id + "\n title= " + title + "\n description= " + description + "\n releaseYear= " + releaseYear
-				+ "\n languageID= " + languageID + "\n rentalDuration= " + rentalDuration + "\n Rental Rate= " + rentalRate
+				+ "\n languageID= " + languageID + "\n Language: " + languageType + "\n rentalDuration= " + rentalDuration + "\n Rental Rate= " + rentalRate
 				+ "\n length= " + length + "\n replacementCost= " + replacementCost + "\n rating= " + rating
 				+ "\n specialFeatures= " + specialFeatures + "\n actors= " + actors + "\n films= " + ".";
 	}
 	public String films() {
-		return "Film ID: " + id + "\n Title: " + title + "\n Description: " + description + "\n Release Year: " + releaseYear 
+		return "Film ID: " + id + "\n Title: " + title + "\n Description: " + description + "\n Language: " + languageType + "\n Release Year: " + releaseYear 
 				+ "\n Rating: " + rating;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(actors, description, id, languageID, length, rating, releaseYear, rentalDuration,
+		return Objects.hash(actors, description, id, languageID, languageType, length, rating, releaseYear, rentalDuration,
 				rentalRate, replacementCost, specialFeatures, title);
 	}
 	@Override
@@ -138,7 +147,7 @@ public class Film {
 		}
 		Film other = (Film) obj;
 		return Objects.equals(actors, other.actors) && Objects.equals(description, other.description)
-				&& id == other.id && languageID == other.languageID
+				&& id == other.id && languageID == other.languageID&& languageType == other.languageType
 				&& length == other.length && Objects.equals(rating, other.rating) && releaseYear == other.releaseYear
 				&& rentalDuration == other.rentalDuration
 				&& Double.doubleToLongBits(rentalRate) == Double.doubleToLongBits(other.rentalRate)

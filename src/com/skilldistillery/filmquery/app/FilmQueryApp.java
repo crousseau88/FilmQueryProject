@@ -3,7 +3,6 @@ package com.skilldistillery.filmquery.app;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
 import com.skilldistillery.filmquery.entities.Film;
@@ -56,8 +55,10 @@ public class FilmQueryApp {
 					
 					if(film != null) {
 						System.out.println("Film ID: " + film.getId());
+						System.out.println("Actors: " + film.getActors());
 						System.out.println("Title: " + film.getTitle());
 						System.out.println("Description: " + film.getDescription());
+						System.out.println("Language: " + film.getLanguageType());
 						System.out.println("Release Year: " + film.getReleaseYear());
 						System.out.println("Rating: " + film.getRating());
 					
