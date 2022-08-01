@@ -56,7 +56,7 @@ public class FilmQueryApp {
 					
 					if(film != null) {
 						System.out.println("Film ID: " + film.getId());
-						System.out.println("Actors: " + db.findActorsByFilmId(id));
+						System.out.println("Cast: " + db.findActorsByFilmId(id));
 						System.out.println("Title: " + film.getTitle());
 						System.out.println("Description: " + film.getDescription());
 						System.out.println("Language: " + film.getLanguageType());
@@ -74,9 +74,14 @@ public class FilmQueryApp {
 					System.out.println("Please enter a search keyword. ");
 					String keyword = input.next();
 					List<Film> film3 =  db.findFilmByKeyWord(keyword);
-					
-					for (Film film2 : film3) {
+					if(film3.size() == 0) {
+						System.out.println("There are no films with that keyword.");
+						System.out.println("Please make another selection");
+					}
+					else {
+						for (Film film2 : film3) {
 						System.out.println(film2.films());
+						}
 					}
 					break;
 				case 3:
